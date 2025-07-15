@@ -18,7 +18,7 @@ st.write("Sube una imagen para detectar objetos usando tu modelo pre-entrenado."
 # --- Carga del Modelo YOLO (Fijo en el Repositorio de GitHub) ---
 @st.cache_resource
 def load_yolo_model():
-    MODEL_PATH = 'best (floresuevasyabiertas).pt' # <--- ¡IMPORTANTE! Reemplaza esto con el nombre exacto de tu archivo de modelo
+    MODEL_PATH = 'best (floresnuevasyabiertas).pt' # <--- ¡IMPORTANTE! Reemplaza esto con el nombre exacto de tu archivo de modelo
     try:
         model = YOLO(MODEL_PATH)
         st.sidebar.success(f"Modelo '{MODEL_PATH}' cargado exitosamente.")
@@ -46,9 +46,9 @@ if uploaded_image_file is not None:
     st.image(original_image, caption="Imagen subida", use_column_width=True)
 
     st.subheader("Resultados de la Detección")
-    
+
     img_np = np.array(original_image)
-    
+
     if img_np.shape[2] == 3:
         img_np_bgr = cv2.cvtColor(img_np, cv2.COLOR_RGB2BGR)
     else:
@@ -56,40 +56,44 @@ if uploaded_image_file is not None:
 
     try:
         results = model.predict(source=img_np_bgr, conf=0.25, iou=0.7, show_labels=True, show_conf=True)
-        
+
         for r in results:
             im_bgr = r.plot()
             im_rgb = cv2.cvtColor(im_bgr, cv2.COLOR_BGR2RGB)
-            
+
             # --- MODIFICACIÓN CLAVE AQUÍ ---
-            # Contar las detecciones
-            num_detections = len(r.boxes)
-            
-            # Definir el mensaje a mostrar
-            detection_message = ""
-            if num_detections == 0:
-                detection_message = "No se detectaron objetos en esta imagen."
-            elif num_detections == 1:
-                detection_message = "Se detectó 1 objeto en esta imagen."
-            else:
-                detection_message = f"Se detectaron {num_detections} objetos en esta imagen."
-            
-            # Mostrar la imagen con las detecciones y el contador como caption
-            st.image(im_rgb, caption=f"Imagen con detecciones. {detection_message}", use_column_width=True)
+            # 1. Contar detecciones por clase
+            class_counts = {}
+            for box in r.boxes:
+                class_id = int(box.cls)
+                label = model.names[class_id]
+                class_counts[label] = class_counts.get(label, 0) + 1
 
-            # También puedes mostrar el mensaje por separado, si lo prefieres
-            # st.write(detection_message) 
+            num_total_detections = len(r.boxes)
 
-            # Opcional: Mostrar la lista detallada de objetos (como ya lo tenías)
+            # 2. Construir el mensaje de resumen
+            summary_message = f"Se detectaron {num_total_detections} objetos en total."
+
+            if num_total_detections > 0:
+                summary_message += "\n" # Nueva línea para el desglose
+                for label, count in class_counts.items():
+                    summary_message += f"- {label}: {count} {'detección' if count == 1 else 'detecciones'}\n"
+
+            # 3. Mostrar la imagen con el resumen en el caption
+            st.image(im_rgb, caption=f"Imagen con detecciones.\n{summary_message}", use_column_width=True)
+
+            # --- Ya no es necesario el bloque de "Detalles de las detecciones" si el resumen es suficiente ---
+            # Si aún quieres el listado detallado, puedes mantener este bloque:
             if r.boxes:
-                st.write(f"**Detalles de las detecciones:**")
+                st.write(f"**Detalles individuales de las detecciones:**")
                 for box in r.boxes:
                     class_id = int(box.cls)
                     confidence = float(box.conf)
                     label = model.names[class_id]
                     st.write(f"- **{label}** (Confianza: {confidence:.2f})")
-            # else: # No es necesario el else aquí si ya el mensaje principal cubre el caso de 0 detecciones
+            # else:
             #     st.write("No se detectaron objetos en esta imagen.")
+
 
     except Exception as e:
         st.error(f"Error durante la inferencia del modelo: {e}")
