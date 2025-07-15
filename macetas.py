@@ -23,8 +23,6 @@ if uploaded_file is not None:
     except Exception as e:
         st.error(f"Error al procesar la imagen: {e}")
 
-pip install ultralytics
-from ultralytics import solutions
 
 from ultralytics import solutions
 
