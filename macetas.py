@@ -100,5 +100,5 @@ else:
 st.sidebar.header("Acerca de")
 st.sidebar.info(
     "Esta aplicación permite cargar dinámicamente un modelo YOLO pre-entrenado (.pt) "
-    "y realizar detección de objetos en imágenes subidas."
+    "y realizar detección de objetos en imágenes subidas"
 )
