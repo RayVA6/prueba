@@ -23,7 +23,7 @@ if uploaded_file is not None:
     except Exception as e:
         st.error(f"Error al procesar la imagen: {e}")
 
-
+import cv2
 from ultralytics import solutions
 
 inf = solutions.Inference(
