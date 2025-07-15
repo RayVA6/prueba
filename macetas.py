@@ -1,9 +1,9 @@
 import streamlit as st
-from PIL import Image
-import numpy as np
-import cv2
-from ultralytics import YOLO
-import os # Para manejar rutas de archivos temporales
+import os # Si estás usando os
+import numpy as np # Si estás usando numpy
+import cv2 # Si estás usando opencv-python
+from PIL import Image # Si estás usando Pillow
+from ultralytics import YOLO # Si estás usando ultralytics
 
 # --- Configuración de la Aplicación Streamlit ---
 st.set_page_config(
