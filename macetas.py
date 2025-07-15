@@ -18,7 +18,7 @@ st.write("Sube una imagen para detectar objetos usando tu modelo pre-entrenado."
 # --- Carga del Modelo YOLO (Fijo en el Repositorio de GitHub) ---
 @st.cache_resource
 def load_yolo_model():
-    MODEL_PATH = 'best (floresnuevasyabiertas).pt' # <--- ¡IMPORTANTE! Reemplaza esto con el nombre exacto de tu archivo de modelo
+    MODEL_PATH = 'best (floresuevasyabiertas).pt' # <--- ¡IMPORTANTE! Reemplaza esto con el nombre exacto de tu archivo de modelo
     try:
         model = YOLO(MODEL_PATH)
         st.sidebar.success(f"Modelo '{MODEL_PATH}' cargado exitosamente.")
