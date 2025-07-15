@@ -86,5 +86,5 @@ else:
 st.sidebar.header("Acerca de")
 st.sidebar.info(
     "Esta aplicación usa un modelo YOLO pre-cargado desde el repositorio "
-    "para realizar detección de objetos en imágenes subidas."
+    "para realizar detección de objetos en imágenes subidas"
 )
