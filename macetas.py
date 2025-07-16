@@ -146,7 +146,7 @@ if uploaded_image_files: # Si hay archivos subidos
         )
 
 else:
-    st.info("Por favor, sube una o más imágenes para realizar la detección de objetos.")
+    st.info("Por favor, sube una o más imágenes para realizar la detección de objetos")
 
 st.sidebar.header("Acerca de")
 st.sidebar.info(
